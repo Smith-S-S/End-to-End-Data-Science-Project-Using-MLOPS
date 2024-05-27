@@ -1,1 +1,5 @@
-key: value
+LogisticRegression:
+  max_iter: 100
+  penalty: elasticnet
+  solver: saga
+  l1_ratio: 0.0

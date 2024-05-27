@@ -13,5 +13,7 @@ COLUMNS:
   OSF:                        int64  
   RNF:                        int64  
 
+
 TARGET_COLUMN:
-  Machine failure:            int64  
+  name: Machine failure
+
