@@ -1,1 +1,17 @@
-key: value
+COLUMNS:
+  UDI:                        int64  
+  Product ID:                 object 
+  Type:                       object 
+  Air temperature [K]:        float64
+  Process temperature [K]:    float64
+  Rotational speed [rpm]:     int64  
+  Torque [Nm]:                float64
+  Tool wear [min]:            int64  
+  TWF:                        int64  
+  HDF:                        int64  
+  PWF:                        int64  
+  OSF:                        int64  
+  RNF:                        int64  
+
+TARGET_COLUMN:
+  Machine failure:            int64  
