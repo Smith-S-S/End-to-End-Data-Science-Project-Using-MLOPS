@@ -3,7 +3,8 @@ from mlproject.utils.common import read_yaml, create_directories
 from mlproject.entity.config_entity import (DataIngestionConfig,
                                             DataValidationConfig,
                                             DataTransformationConfig,
-                                            ModelTrainerConfig)
+                                            ModelTrainerConfig,
+                                            ModelEvaluationConfig)
 
 class ConfigurationManager:
     def __init__(
@@ -86,4 +87,49 @@ class ConfigurationManager:
         )
 
         return model_trainer_config
+    
+
+    def get_model_trainer_config(self) -> ModelTrainerConfig:
+        config = self.config.model_trainer
+        params = self.params.LogisticRegression
+        schema =  self.schema.TARGET_COLUMN
+
+        create_directories([config.root_dir])
+
+        model_trainer_config = ModelTrainerConfig(
+            root_dir=config.root_dir,
+            train_data_path = config.train_data_path,
+            test_data_path = config.test_data_path,
+            model_name = config.model_name,
+            max_iter = params.max_iter,
+            penalty = params.penalty,
+            solver= params.solver,
+            l1_ratio = params.l1_ratio,
+            target_column = schema.name
+            
+        )
+
+        return model_trainer_config
+    
+
+
+    def get_model_evaluation_config(self) -> ModelEvaluationConfig:
+        config = self.config.model_evaluation
+        params = self.params.LogisticRegression
+        schema =  self.schema.TARGET_COLUMN
+
+        create_directories([config.root_dir])
+
+        model_evaluation_config = ModelEvaluationConfig(
+            root_dir=config.root_dir,
+            test_data_path=config.test_data_path,
+            model_path = config.model_path,
+            all_params=params,
+            metric_file_name = config.metric_file_name,
+            target_column = schema.name,
+            mlflow_uri="https://dagshub.com/Smith-S-S/End-to-End-Data-Science-Project-Using-MLOPS.mlflow",
+           
+        )
+
+        return model_evaluation_config
     

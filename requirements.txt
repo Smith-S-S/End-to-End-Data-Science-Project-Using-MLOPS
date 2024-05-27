@@ -17,4 +17,5 @@ scipy
 Flask
 Flask-Cors
 streamlit
+dagshub
 -e .

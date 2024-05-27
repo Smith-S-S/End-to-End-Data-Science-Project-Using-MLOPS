@@ -1,0 +1,59 @@
+stages:
+  data_ingestion:
+    cmd: python src/mlproject/pipeline/stage_01_data_ingestion.py
+    deps:
+      - src/mlproject/pipeline/stage_01_data_ingestion.py
+      - config/config.yaml
+    outs:
+      - artifacts/data_ingestion/ai4i2020.csv
+
+  data_validation:
+    cmd: python src/mlproject/pipeline/stage_02_data_validation.py
+    deps:
+      - src/mlproject/pipeline/stage_02_data_validation.py
+      - config/config.yaml
+      - artifacts/data_ingestion/ai4i2020.csv
+    outs:
+      - artifacts/data_validation/status.txt
+
+  transformation:
+    cmd: |
+      if grep -q "True" artifacts/data_validation/status.txt; then
+        python src/mlproject/pipeline/stage_03_data_transformation.py
+      else
+        echo "Data validation failed. Skipping transformation stage."
+      fi
+    deps:
+      - src/mlproject/pipeline/stage_03_data_transformation.py
+      - config/config.yaml
+      - artifacts/data_ingestion/ai4i2020.csv
+    outs:
+      - artifacts/data_transformation/train.csv
+      - artifacts/data_transformation/test.csv
+
+  training:
+    cmd: python src/mlproject/pipeline/stage_04_model_trainer.py
+    deps:
+      - src/mlproject/pipeline/stage_04_model_trainer.py
+      - config/config.yaml
+      - artifacts/data_transformation/train.csv
+      - params.yaml
+    params:
+      - LogisticRegression
+
+    outs:
+      - artifacts/model_trainer/model.joblib
+
+  evaluation:
+    cmd: python src/mlproject/pipeline/stage_05_model_evaluation.py
+    deps:
+      - src/mlproject/pipeline/stage_05_model_evaluation.py
+      - config/config.yaml
+      - params.yaml
+      - artifacts/data_transformation/test.csv
+      - artifacts/model_trainer/model.joblib
+    params:
+      - LogisticRegression
+
+    outs:
+      - artifacts/model_evaluation/metrics.json
