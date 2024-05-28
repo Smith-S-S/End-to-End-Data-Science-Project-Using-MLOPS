@@ -104,8 +104,8 @@ def main():
         st.session_state['ptype'] = ['Low', 'Medium', 'High'].index(ptype)
 
         # Run the main.py script
-        import run
-        run.main()
+        # import run
+        # run.main()
         try:
             with open('model/metrics.json', 'r') as file:
                 metrics = json.load(file)
