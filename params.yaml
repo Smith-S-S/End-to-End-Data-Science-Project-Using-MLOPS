@@ -1,5 +1,5 @@
 LogisticRegression:
+  l1_ratio: 0.0
   max_iter: 100
   penalty: l2
   solver: lbfgs
-  l1_ratio: 0.0
